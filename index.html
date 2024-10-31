@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RealHome - Your Dream Home Awaits</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+       .hero-section {
+      background-image: url('hero-image.jpg'); 
+      background-size: cover;
+      background-position: center;
+      color: rgb(0, 0, 0);
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero-section h2 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero-section p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      text-align: justify;
+    }
+
+    .hero-section button {
+      background-color: #0065c4;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      color: rgb(255, 255, 255);
+      text-transform: uppercase;
+    }
+
+    .hero-section button:hover {
+      background-color: #022c56;
+    }
+   
+    .featured-properties {
+      text-align: center;
+      margin: 1px auto;
+      padding: 0.50px;
+      max-width: 1000px;
+    }
+
+    .featured-properties h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .property-item {
+      display: inline-block;
+      width: 30%;
+      background-color: white;
+      margin: 15px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      text-align: left;
+    }
+
+    .property-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .property-item h3 {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+
+    .property-item p {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .property-item a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background-color: #0065c4;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .property-item a:hover {
+      background-color: #022c56;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <img src="images/1.jpg" alt="Logo">
+      <h1>RealHome</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Property Listings</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="add-property.html">Add Property</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li><a href="contact.html">Contact Us</a></li> 
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <h2><span style="text-decoration: underline;">Find Your Dream Home</span></h2>
+    <div class="welcome-box">
+  <p>Welcome to <strong>RealHome</strong>, where your dream home awaits! We are committed to helping you find the perfect place to call your own, whether you're buying, renting, or selling. Explore thousands of listings tailored to every need and lifestyle. Our easy-to-use platform offers powerful search filters, detailed property insights, and interactive maps to guide you every step of the way. Start your journey with RealHome today and discover a world of possibilities for finding your next home!</p>
+</div>
+    <button onclick="window.location.href='listings.html'">Browse Listings</button>
+  </div>
+
+  <!-- Featured Properties Section -->
+  <div class="featured-properties">
+    <h2>Featured Properties</h2>
+    <div class="property-item">
+      <img src="https://images.prop24.com/341887972/Crop320x213" alt="Property 1">
+      <h3>3 Bedroom House for Sale</h3>
+      <p>10 Park Drive, Westville, Durban</p>
+      <p>R3 395 000 </p>
+      <a href="property-details.html?id=0">View Details</a> 
+    </div>
+    <div class="property-item">
+      <img src="https://images.prop24.com/343994442/Crop320x213" alt="Property 2">
+      <h3>2 Bedroom Apartment / Flat</h3>
+      <p>23 Glenhaven Retirement Village, 480 Esther Roberts Road, Glenwood, Durban</p>
+      <p>R799 000</p>
+      <a href="property-details.html?id=1">View Details</a> 
+
+  </div>
+  
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 RealHome. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Add search functionality
+    const searchForm = document.getElementById('search-form');
+    searchForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const location = document.getElementById('search-location').value.toLowerCase();
+      const minPrice = document.getElementById('search-min-price').value;
+      const maxPrice = document.getElementById('search-max-price').value;
+      const type = document.getElementById('search-type').value.toLowerCase();
+
+      const searchParams = new URLSearchParams({
+        location,
+        minPrice,
+        maxPrice,
+        type
+      });
+
+      // Redirect to listings page with search parameters
+      window.location.href = `listings.html?${searchParams.toString()}`;
+    });
+  </script>
+</body>
+</html>

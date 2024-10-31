@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Property - RealHome</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+   
+    form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"], input[type="number"], input[type="url"], select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0065c4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #022c56;
+    }
+
+    .property-list {
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    .property-item {
+      background-color: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .property-item img {
+      max-width: 100%;
+    }
+
+    .actions {
+      text-align: right;
+    }
+
+    .actions button {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <img src="images/1.jpg" alt="Logo">
+    <h1>Add a New Property</h1>
+    </div>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listings.html">Property Listings</a></li>
+          <li><a href="map.html">Map</a></li>
+          <li><a href="add-property.html">Add Property</a></li>
+          <li><a href="wishlist.html">Wishlist</a></li>
+          <li><a href="contact.html">Contact Us</a></li> 
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav>
+  </header>
+
+  <form id="property-form">
+    <h2>Add or Edit Property</h2>
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required>
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" required>
+
+    <label for="property-type">Property Type:</label>
+    <select id="property-type" name="property-type" required>
+      <option value="house">House</option>
+      <option value="apartment">Apartment/Flat</option>
+      <option value="condo">Condo</option>
+      <option value="townhouse">Townhouse</option>
+      <option value="land">Land</option>
+    </select>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="4" required></textarea>
+
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="image" accept="image/*" required>
+
+    <label for="map-link">Google Maps Link:</label>
+    <input type="url" id="map-link" name="map-link" placeholder="https://maps.google.com/..." required>
+
+    <button type="submit">Add Property</button>
+  </form>
+  <footer>
+    <p>&copy; 2024 RealHome. All Rights Reserved.</p>
+  </footer>
+  <script>
+    // Simulating a list of properties stored in localStorage
+    const propertyList = JSON.parse(localStorage.getItem('properties')) || [];
+
+    const propertyForm = document.getElementById('property-form');
+
+    // Function to handle form submission
+    propertyForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const title = document.getElementById('title').value;
+      const location = document.getElementById('location').value;
+      const price = document.getElementById('price').value;
+      const propertyType = document.getElementById('property-type').value;
+      const description = document.getElementById('description').value;
+      const image = document.getElementById('image').files[0];
+      const mapLink = document.getElementById('map-link').value;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const newProperty = {
+          title,
+          location,
+          price,
+          propertyType,  // Added property type field
+          description,
+          image: e.target.result, // Image URL as base64
+          mapLink
+        };
+
+        propertyList.push(newProperty);
+        localStorage.setItem('properties', JSON.stringify(propertyList));
+
+        // Reset form
+        propertyForm.reset();
+
+        // Redirect to the listings page after adding a property
+        window.location.href = "listings.html";
+      };
+      reader.readAsDataURL(image);
+    });
+  </script>
+</body>
+</html>

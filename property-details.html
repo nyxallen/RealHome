@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details - RealHome</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .property-details {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .property-details img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .property-details h2 {
+      margin-top: 20px;
+      font-size: 28px;
+    }
+
+    .property-details p {
+      margin: 10px 0;
+    }
+
+    /* Unified button style */
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #0065c4;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .back-button:hover {
+      background-color: #022c56;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <img src="images/1.jpg" alt="Logo">
+    <h1>Property Details</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Property Listings</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="add-property.html">Add Property</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li><a href="contact.html">Contact Us</a></li> 
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="property-details" id="property-details">
+    <!-- Property details will be populated here -->
+  </div>
+
+  <!-- Back to Listings Button -->
+  <a href="listings.html" class="back-button">Back to Listings</a>
+
+  <script>
+    // Function to get URL parameters
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Generate a Google Maps link based on the property location
+    function generateGoogleMapsLink(location) {
+      const baseUrl = "https://www.google.com/maps?q=";
+      return `${baseUrl}${encodeURIComponent(location)}`;
+    }
+
+    // Load property details based on the ID from the URL
+    window.onload = function() {
+      const propertyId = getQueryParam('id');
+
+      // Retrieve the property list from localStorage
+      const propertyList = JSON.parse(localStorage.getItem('properties')) || [];
+      const property = propertyList[propertyId];
+
+      if (property) {
+        const mapLink = generateGoogleMapsLink(property.location);  // Generate the map link
+
+        document.getElementById('property-details').innerHTML = `
+          <img src="${property.image}" alt="${property.title}">
+          <h2>${property.title}</h2>
+          <p><strong>Location:</strong> ${property.location}</p>
+          <p><strong>Price:</strong> ${property.price}</p>
+          <p><strong>Description:</strong> ${property.description}</p>
+          <p><a id="property-map-link" href="${mapLink}" target="_blank">View on Google Maps</a></p>
+        `;
+      } else {
+        document.getElementById('property-details').innerHTML = `<p>Property not found.</p>`;
+      }
+
+      // Add "Back to Wishlist" button if navigated from wishlist
+      const source = getQueryParam('source');
+      if (source === 'wishlist') {
+        const backToWishlistButton = document.createElement('a');
+        backToWishlistButton.href = 'wishlist.html';
+        backToWishlistButton.textContent = 'Back to Wishlist';
+        backToWishlistButton.className = 'back-button';
+        document.body.appendChild(backToWishlistButton);
+      }
+    };
+  </script>
+</body>
+<footer>
+  <p>&copy; 2024 RealHome. All Rights Reserved.</p>
+</footer>
+</html>

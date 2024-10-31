@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist - RealHome</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Grid layout for wishlist items */
+    .property-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .property-item {
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .property-item:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .property-item img {
+      width: 100%; 
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .property-item h3 {
+      font-size: 18px;
+      margin: 10px 0 5px;
+    }
+
+    .property-item p {
+      margin: 5px 0;
+    }
+
+    button {
+      background-color: #ff4c4c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #cc3a3a;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <img src="images/1.jpg" alt="Logo">
+    <h1>Your Wishlist</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Property Listings</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="add-property.html">Add Property</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li><a href="contact.html">Contact Us</a></li> 
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Wishlist Container in Grid Layout -->
+  <div id="wishlist" class="property-list"></div>
+
+  <script>
+    const wishlistContainer = document.getElementById('wishlist');
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+    function displayWishlist() {
+      wishlistContainer.innerHTML = '';
+      if (wishlist.length === 0) {
+        wishlistContainer.innerHTML = '<p>Your wishlist is empty.</p>';
+      } else {
+        wishlist.forEach((property, index) => {
+          const propertyItem = document.createElement('div');
+          propertyItem.classList.add('property-item');
+
+          propertyItem.innerHTML = `
+            <h3>${property.title}</h3>
+            <p class="property-type">Type: ${property.type}</p>
+            <p>Location: ${property.location}</p>
+            <p>Price: R${property.price}</p>
+            <img src="${property.image}" alt="${property.title}">
+            <p><a href="property-details.html?id=${index}&source=wishlist">View Details</a></p>
+            <button onclick="removeFromWishlist(${index})">Remove</button>
+          `;
+
+          wishlistContainer.appendChild(propertyItem);
+        });
+      }
+    }
+
+    // Remove property from wishlist
+    function removeFromWishlist(index) {
+      if (confirm('Are you sure you want to remove this property from your wishlist?')) {
+        wishlist.splice(index, 1);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        displayWishlist();
+      }
+    }
+
+    // Display wishlist initially
+    displayWishlist();
+  </script>
+</body>
+<footer>
+  <p>&copy; 2024 RealHome. All Rights Reserved.</p>
+</footer>
+</html>

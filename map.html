@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map - RealHome</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <style>
+   
+    /* Map container styling */
+    #map {
+      height: 500px;
+      width: 80%;
+      margin: 20px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Center alignment for the main content */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header and navigation -->
+  <header>
+    <h1>Property Locations</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Property Listings</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="add-property.html">Add Property</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main content container -->
+  <div class="container">
+    <div id="map"></div>
+  </div>
+
+  <!-- Leaflet.js script -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Initialize the map and set its view to a chosen location
+    const map = L.map('map').setView([-29.8680733, 30.8261356], 12); 
+
+    // Add OpenStreetMap tiles to the map
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Fetch property locations from the server
+    fetch('/api/properties') // Adjust the URL if necessary
+      .then(response => response.json())
+      .then(properties => {
+        // Add markers for each property with popups
+        properties.forEach(property => {
+            const marker = L.marker([property.location.lat, property.location.lng]).addTo(map);
+            marker.bindPopup(`<h3>${property.title}</h3><p>${property.description}</p>`);
+        });
+      })
+      .catch(err => console.error('Error fetching properties:', err));
+</script>
+</body>
+</html>

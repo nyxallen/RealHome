@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Listings</title>
+     <link rel="stylesheet" href="styles.css">
+  </head>
+  <style>
+     body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+ 
+    button {
+      width: 100px;
+      padding: 10px;
+      background-color: #0065c4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      text-align: center;
+      border-radius: 4px;
+      margin: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #022c56;
+    }
+
+    .property-item img {
+      width: 300px;
+      height: auto;
+    }
+
+    .property-item {
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .property-item:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .property-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      button {
+        width: 80px;
+      }
+    }
+
+    /* Styling for the Edit Form */
+    #edit-form-container {
+      margin: 20px auto;
+      width: 100%;
+      max-width: 600px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #edit-form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0065c4;
+    }
+
+    #edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    #edit-form input, #edit-form select {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    #edit-form button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #0065c4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #edit-form button:hover {
+      background-color: #022c56;
+    }
+
+    #edit-form-container .close-btn {
+      text-align: right;
+    }
+
+    .close-btn button {
+      background-color: red;
+      font-size: 12px;
+    }
+    .filter-container {
+      background-color: white;
+      padding: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      max-width: 538px;
+      margin: -0.10px auto 20px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .filter-container input, .filter-container select, .filter-container button {
+      padding: 10px;
+      margin: 5px;
+      width: 100%;
+      max-width: 150px;
+    }
+
+    .filter-container button {
+      background-color: #0065c4;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .filter-container button:hover {
+      background-color: #022c56;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <img src="images/1.jpg" alt="Logo">
+    <h1>Property Listings</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html">Property Listings</a></li>
+        <li><a href="map.html">Map</a></li>
+        <li><a href="add-property.html">Add Property</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="filter-container">
+    <input type="text" id="search-input" placeholder="Search by title or location" oninput="filterProperties()">
+    <select id="type-filter" onchange="filterProperties()">
+      <option value="">All Types</option>
+      <option value="apartment">Apartment/Flat</option>
+      <option value="house">House</option>
+      <option value="condo">Condo</option>
+      <option value="townhouse">Townhouse</option>
+      <option value="land">Land</option>
+    </select>
+    <input type="number" id="max-price-filter" placeholder="Max Price" oninput="filterProperties()">
+  </div>
+
+  <!-- Property List Container -->
+  <div class="property-list" id="property-list"></div>
+
+  <!-- Edit Property Form (Initially Hidden) -->
+  <div id="edit-form-container" style="display: none;">
+    <div class="close-btn">
+      <button onclick="closeEditForm()">Close</button>
+    </div>
+    <h2>Edit Property</h2>
+    <form id="edit-form">
+      <input type="text" id="edit-title" placeholder="Title" required>
+      <input type="text" id="edit-location" placeholder="Location" required>
+      <input type="number" id="edit-price" placeholder="Price" required>
+      <select id="edit-type">
+        <option value="apartment">Apartment/Flat</option>
+        <option value="house">House</option>
+        <option value="condo">Condo</option>
+        <option value="townhouse">Townhouse</option>
+        <option value="land">Land</option>
+      </select>
+      <input type="text" id="edit-details" placeholder="Details" required>
+      <input type="url" id="edit-image" placeholder="Image URL" required>
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+
+  <script>
+    const propertyList = JSON.parse(localStorage.getItem('properties')) || [];
+    const propertyListContainer = document.getElementById('property-list');
+    const editFormContainer = document.getElementById('edit-form-container');
+    const editForm = document.getElementById('edit-form');
+    const favoritesList = JSON.parse(localStorage.getItem('favorites')) || [];
+    let editIndex = null;
+
+    // Display properties
+    function displayProperties(properties) {
+      propertyListContainer.innerHTML = '';
+      properties.forEach((property, index) => {
+        const propertyItem = document.createElement('div');
+        propertyItem.classList.add('property-item');
+        propertyItem.innerHTML = `
+          <h3>${property.title}</h3>
+          <p>Location: ${property.location}</p>
+          <p>Price: R${property.price}</p>
+          <p>Type: ${property.type}</p>
+          <img src="${property.image}" alt="${property.title}">
+          <div class="actions">
+            <button onclick="viewPropertyDetails(${index})">View Details</button>
+            <button onclick="editProperty(${index})">Edit</button>
+            <button onclick="removeProperty(${index})">Remove</button>
+            <button class="wishlist-btn" onclick="addToWishlist(${index})">Wishlist</button>
+          </div>
+        `;
+        propertyListContainer.appendChild(propertyItem);
+      });
+    }
+    function filterProperties() {
+      const searchInput = document.getElementById('search-input').value.toLowerCase();
+      const typeFilter = document.getElementById('type-filter').value;
+      const maxPriceFilter = document.getElementById('max-price-filter').value;
+
+      const filteredProperties = propertyList.filter(property => {
+        const matchesSearch = property.title.toLowerCase().includes(searchInput) ||
+                              property.location.toLowerCase().includes(searchInput);
+        const matchesType = typeFilter ? property.type === typeFilter : true;
+        const matchesPrice = maxPriceFilter ? property.price <= maxPriceFilter : true;
+        return matchesSearch && matchesType && matchesPrice;
+      });
+
+      displayProperties(filteredProperties);
+    }
+
+ // View Property Details
+ function viewPropertyDetails(index) {
+  window.location.href = `property-details.html?id=${index}`;
+}
+
+    // Edit Property
+    function editProperty(index) {
+      const property = propertyList[index];
+      editIndex = index;
+      document.getElementById('edit-title').value = property.title;
+      document.getElementById('edit-location').value = property.location;
+      document.getElementById('edit-price').value = property.price;
+      document.getElementById('edit-type').value = property.type;
+      document.getElementById('edit-details').value = property.details;
+      document.getElementById('edit-image').value = property.image;
+      editFormContainer.style.display = 'block';
+    }
+
+    // Close Edit Form
+    function closeEditForm() {
+      editFormContainer.style.display = 'none';
+    }
+
+    // Save changes after editing
+    editForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const updatedProperty = {
+        title: document.getElementById('edit-title').value,
+        location: document.getElementById('edit-location').value,
+        price: document.getElementById('edit-price').value,
+        type: document.getElementById('edit-type').value,
+        image: document.getElementById('edit-image').value,
+      };
+      propertyList[editIndex] = updatedProperty;
+      localStorage.setItem('properties', JSON.stringify(propertyList));
+      editFormContainer.style.display = 'none';
+      displayProperties(propertyList);
+    });
+
+    // Remove property
+    function removeProperty(index) {
+      if (confirm('Are you sure you want to remove this property?')) {
+        propertyList.splice(index, 1);
+        localStorage.setItem('properties', JSON.stringify(propertyList));
+        displayProperties(propertyList);
+      }
+    }
+
+    // Add to wishlist
+    function addToWishlist(index) {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      wishlist.push(propertyList[index]);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      alert('Property added to wishlist!');
+    }
+    // Display initial properties
+    displayProperties(propertyList);
+  </script>
+</body>
+<footer>
+  <p>&copy; 2024 RealHome. All Rights Reserved.</p>
+</footer>
+</html>
